@@ -2,10 +2,8 @@ import Product from '../models/Product.js'
 import Sale from '../models/Sale.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 
-// POST /api/seller/sales  (protected, shop sellers only)
-// Body: { productId, quantity, channel: 'online' | 'offline', customerName? }
-// Logs a sale (the seller's manual "offline" entries and the app's own
-// "online" checkouts both land here) and bumps the product's stock/sold.
+// _________________________________________________________________________
+// =========================================================================
 export const recordSale = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
     return res.status(403).json({ message: 'Only shop accounts can record sales.' })
@@ -41,6 +39,8 @@ export const recordSale = asyncHandler(async (req, res) => {
   res.status(201).json(sale)
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/sales  (protected, shop sellers only)
 export const listSales = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
@@ -52,3 +52,5 @@ export const listSales = asyncHandler(async (req, res) => {
     .limit(100)
   res.json(sales)
 })
+// _________________________________________________________________________
+// =========================================================================

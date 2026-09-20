@@ -9,4 +9,4 @@ router.post('/login', login)
 router.get('/me', protect, getMe)
 router.patch('/location', protect, updateLocation)
 
-export default router
+export default router 

@@ -4,13 +4,12 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 import { haversineKm, parseLatLng } from '../utils/geo.js'
 
 // GET /api/shops?lat=&lng=  (public — nearby shops section on the homepage)
-
 export const listShops = asyncHandler(async (req, res) => {
   const here = parseLatLng(req.query)
   const shops = await Shop.find().limit(50)
-  let profiles = shops.map((s) => s.toPublicProfile())
+  let profiles = shops.map((s) => s.toPublicProfile())  // define in model to remove pvt data
 
-  if (here) {
+  if (here) {  
     profiles = profiles
       .map((p) => ({
         ...p,
@@ -31,7 +30,7 @@ export const listServices = asyncHandler(async (req, res) => {
   const services = await ServiceProvider.find().limit(50)
   let profiles = services.map((s) => s.toPublicProfile())
 
-  if (here) {
+  if (here) { 
     profiles = profiles
       .map((p) => ({
         ...p,

@@ -34,3 +34,4 @@ export const search = asyncHandler(async (req, res) => {
     shops: shops.map((s) => s.toPublicProfile()),
   })
 })
+ 

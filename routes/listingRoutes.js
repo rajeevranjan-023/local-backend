@@ -8,4 +8,4 @@ router.get('/shops', listShops)
 router.get('/services', listServices)
 router.get('/products', listAllProducts)
 
-export default router
+export default router   

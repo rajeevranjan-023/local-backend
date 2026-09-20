@@ -13,10 +13,10 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-productSchema.virtual('profit').get(function profit() {
-  return (this.price - this.costPrice) * this.sold
+productSchema.virtual('profit').get(function profit() {       //calculate profit for each product
+  return (this.price - this.costPrice) * this.sold            //profit = (price - costPrice) * sold
 })
 
-productSchema.set('toJSON', { virtuals: true })
+productSchema.set('toJSON', { virtuals: true })               // convert to json
 
 export default mongoose.model('Product', productSchema)

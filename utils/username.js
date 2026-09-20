@@ -1,10 +1,10 @@
 
-const USERNAME_REGEX = /^@[a-zA-Z0-9]+(_[a-zA-Z0-9]+)*$/
+const USERNAME_unit = /^@[a-zA-Z0-9]+(_[a-zA-Z0-9]+)*$/
 
 export function isValidUsernameFormat(username) {
   if (typeof username !== 'string') return false
   if (username.length < 4) return false 
-  return USERNAME_REGEX.test(username)
+  return USERNAME_unit.test(username)
 }
 
 export function normalizeUsername(raw) {

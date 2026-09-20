@@ -1,6 +1,8 @@
 import Credit from '../models/Credit.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/credits  (protected, shop sellers only)
 export const listCredits = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
@@ -11,6 +13,8 @@ export const listCredits = asyncHandler(async (req, res) => {
   res.json({ credits, totalDue })
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // POST /api/seller/credits  (protected)
 export const addCredit = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
@@ -32,6 +36,8 @@ export const addCredit = asyncHandler(async (req, res) => {
   res.status(201).json(credit)
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // PATCH /api/seller/credits/:creditId/pay  (protected) - mark as paid
 export const markCreditPaid = asyncHandler(async (req, res) => {
   const credit = await Credit.findOne({ _id: req.params.creditId, shopId: req.sellerAccount._id })
@@ -43,6 +49,8 @@ export const markCreditPaid = asyncHandler(async (req, res) => {
   res.json(credit)
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // DELETE /api/seller/credits/:creditId  (protected)
 export const deleteCredit = asyncHandler(async (req, res) => {
   const credit = await Credit.findOneAndDelete({ _id: req.params.creditId, shopId: req.sellerAccount._id })
@@ -51,3 +59,5 @@ export const deleteCredit = asyncHandler(async (req, res) => {
   }
   res.json({ message: 'Credit entry deleted.' })
 })
+// _________________________________________________________________________
+// =========================================================================

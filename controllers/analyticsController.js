@@ -2,8 +2,9 @@ import Product from '../models/Product.js'
 import Sale from '../models/Sale.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/analytics  (protected, shop sellers only)
-// Query params: sort = 'sales' | 'profit' | 'lowest'  (default: 'sales')
 export const getAnalytics = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
     return res.status(403).json({ message: 'Only shop accounts have analytics.' })
@@ -73,3 +74,5 @@ export const getAnalytics = asyncHandler(async (req, res) => {
     products: perProduct,
   })
 })
+// _________________________________________________________________________
+// =========================================================================

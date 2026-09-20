@@ -4,10 +4,9 @@ import ServiceProvider from '../models/ServiceProvider.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 import { isValidUsernameFormat, normalizeUsername } from '../utils/username.js'
 
-// Shared by both branches below: validate format, then check it isn't
-// already taken by *any* user (usernames are unique across the whole
-// platform, not just within shops or within services).
-async function assertUsernameAvailable(rawUsername) {
+// _________________________________________________________________________
+// =========================================================================
+async function assertUsernameAvailable(rawUsername) {    //usernme valid and availbity check
   const username = normalizeUsername(rawUsername)
 
   if (!isValidUsernameFormat(username)) {
@@ -26,12 +25,16 @@ async function assertUsernameAvailable(rawUsername) {
   return { ok: true, username }
 }
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/check-username/:username  (protected)
 export const checkUsernameAvailability = asyncHandler(async (req, res) => {
   const result = await assertUsernameAvailable(req.params.username)
   res.json({ available: result.ok, message: result.ok ? null : result.error })
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // POST /api/seller/start  (protected)
 export const startSellerAccount = asyncHandler(async (req, res) => {
   if (req.user.role === 'seller') {
@@ -130,6 +133,8 @@ export const startSellerAccount = asyncHandler(async (req, res) => {
   return res.status(400).json({ message: "sellerType must be 'shop' or 'service'." })
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/me  (protected, seller only)
 export const getMySellerAccount = asyncHandler(async (req, res) => {
   if (req.user.role !== 'seller') {
@@ -147,3 +152,5 @@ export const getMySellerAccount = asyncHandler(async (req, res) => {
 
   res.json({ sellerType: req.user.sellerType, account: account.toPublicProfile() })
 })
+// _________________________________________________________________________
+// =========================================================================

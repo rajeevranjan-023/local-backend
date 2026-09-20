@@ -23,9 +23,7 @@ const serviceProviderSchema = new mongoose.Schema(
 
     // ---------- Media ----------
     bannerUrl: { type: String, default: '' },
-
     description: { type: String, default: '' }, // work description
-
     workType: { type: String, required: true, trim: true }, // e.g. "Electrician"
 
     // ---------- Area of service (multiple allowed) ----------
@@ -36,7 +34,7 @@ const serviceProviderSchema = new mongoose.Schema(
     // ---------- Pricing ----------
     price: {
       amount: { type: Number, required: true },
-      unit: { type: String, enum: ['hour', 'day', 'fixed'], default: 'hour' },
+      unit: { type: String, enum: ['hour', 'day', 'fixed'] },
     },
 
     // ---------- Availability ----------

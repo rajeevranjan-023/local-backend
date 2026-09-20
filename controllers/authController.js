@@ -2,8 +2,10 @@ import User from '../models/User.js'
 import { generateToken } from '../utils/generateToken.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 
+// _________________________________________________________________________
+// =========================================================================
 // POST /api/auth/register
-export const register = asyncHandler(async (req, res) => {
+export const register = asyncHandler(async (req, res) => { 
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
@@ -23,6 +25,8 @@ export const register = asyncHandler(async (req, res) => {
   })
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // POST /api/auth/login
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body
@@ -42,13 +46,16 @@ export const login = asyncHandler(async (req, res) => {
   })
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/auth/me  (protected)
 export const getMe = asyncHandler(async (req, res) => {
   res.json({ user: req.user.toSafeObject() })
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // PATCH /api/auth/location  (protected)
-
 export const updateLocation = asyncHandler(async (req, res) => {
   const { lat, lng } = req.body
 
@@ -61,3 +68,5 @@ export const updateLocation = asyncHandler(async (req, res) => {
 
   res.json({ user: req.user.toSafeObject() })
 })
+// _________________________________________________________________________
+// =========================================================================

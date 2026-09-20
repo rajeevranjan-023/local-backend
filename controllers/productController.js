@@ -1,9 +1,11 @@
 import Product from '../models/Product.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/products  (public — trending products across all shops, for the homepage)
 export const listAllProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().populate('shopId', 'shopName username').limit(40)
+  const products = await Product.find().populate('shopId', 'shopName username').limit(30)
   res.json(
     products.map((p) => ({
       id: p._id,
@@ -17,6 +19,8 @@ export const listAllProducts = asyncHandler(async (req, res) => {
   )
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/products  (protected, shop sellers only)
 export const listMyProducts = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
@@ -26,6 +30,8 @@ export const listMyProducts = asyncHandler(async (req, res) => {
   res.json(products)
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // POST /api/seller/products  (protected)
 export const createProduct = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {
@@ -47,6 +53,8 @@ export const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(product)
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // PUT /api/seller/products/:productId  (protected)
 export const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findOne({ _id: req.params.productId, shopId: req.sellerAccount._id })
@@ -65,6 +73,8 @@ export const updateProduct = asyncHandler(async (req, res) => {
   res.json(product)
 })
 
+// _________________________________________________________________________
+// =========================================================================
 // DELETE /api/seller/products/:productId  (protected)
 export const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findOneAndDelete({
@@ -76,3 +86,5 @@ export const deleteProduct = asyncHandler(async (req, res) => {
   }
   res.json({ message: 'Product deleted.' })
 })
+// _________________________________________________________________________
+// =========================================================================
