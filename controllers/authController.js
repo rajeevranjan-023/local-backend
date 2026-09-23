@@ -1,7 +1,6 @@
 import User from '../models/User.js'
 import { generateToken } from '../utils/generateToken.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
-
 // _________________________________________________________________________
 // =========================================================================
 // POST /api/auth/register

@@ -10,7 +10,7 @@ import { notFound, errorHandler } from './middleware/errorHandler.js'
 
 
 
-
+// https://local-backend-7wqg.onrender.com
 
 
 
@@ -45,6 +45,14 @@ app.use('/api/seller', sellerRoutes)
 // Unified public profile — GET /api/profile/:id (shop OR service, auto-detected)
 import profileRoutes from './routes/profileRoutes.js'
 app.use('/api/profile', profileRoutes)
+
+// Reviews on shops/service providers
+import reviewRoutes from './routes/reviewRoutes.js'
+app.use('/api/reviews', reviewRoutes)
+
+// Requirement system — post a need,
+import requirementRoutes from './routes/requirementRoutes.js'
+app.use('/api/requirements', requirementRoutes)
 
 
 // _________________________________________________________________________

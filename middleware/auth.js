@@ -30,6 +30,24 @@ export const protect = asyncHandler(async (req, res, next) => {   // is user log
 // _________________________________________________________________________________
 // =================================================================================
 
+export const optionalAuth = asyncHandler(async (req, res, next) => {
+  const header = req.headers.authorization
+  if (!header || !header.startsWith('Bearer ')) {
+    return next()
+  }
+  try {
+    const token = header.split(' ')[1]
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const user = await User.findById(decoded.id)
+    if (user) req.user = user
+  } catch (err) {
+  }
+  next()
+})
+
+// _________________________________________________________________________________
+// =================================================================================
+
 export const requireSeller = asyncHandler(async (req, res, next) => {     //is user a seller or not
   if (req.user.role !== 'seller') {                   //seller can be,[service provide or shop owner]
     return res.status(403).json({ message: 'Only sellers can access this. Finish "Start Yours" first.' })

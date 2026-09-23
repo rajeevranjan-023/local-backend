@@ -38,6 +38,26 @@ export const addCredit = asyncHandler(async (req, res) => {
 
 // _________________________________________________________________________
 // =========================================================================
+// PATCH /api/seller/credits/:creditId  (protected) - edit customer/amount/notes
+export const updateCredit = asyncHandler(async (req, res) => {
+  const credit = await Credit.findOne({ _id: req.params.creditId, shopId: req.sellerAccount._id })
+  if (!credit) {
+    return res.status(404).json({ message: 'Credit entry not found.' })
+  }
+
+  const { customerName, phone, amount, dueDate, notes } = req.body
+  if (customerName !== undefined) credit.customerName = customerName
+  if (phone !== undefined) credit.phone = phone
+  if (amount !== undefined) credit.amount = amount
+  if (dueDate !== undefined) credit.dueDate = dueDate || null
+  if (notes !== undefined) credit.notes = notes
+
+  await credit.save()
+  res.json(credit)
+})
+
+// _________________________________________________________________________
+// =========================================================================
 // PATCH /api/seller/credits/:creditId/pay  (protected) - mark as paid
 export const markCreditPaid = asyncHandler(async (req, res) => {
   const credit = await Credit.findOne({ _id: req.params.creditId, shopId: req.sellerAccount._id })

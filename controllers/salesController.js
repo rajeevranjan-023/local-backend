@@ -41,6 +41,39 @@ export const recordSale = asyncHandler(async (req, res) => {
 
 // _________________________________________________________________________
 // =========================================================================
+// PUT /api/seller/sales/:saleId  (protected) - edit a logged bill/sale.
+
+export const updateSale = asyncHandler(async (req, res) => {
+  const sale = await Sale.findOne({ _id: req.params.saleId, shopId: req.sellerAccount._id })
+  if (!sale) {
+    return res.status(404).json({ message: 'Sale not found.' })
+  }
+
+  const { quantity, channel, customerName } = req.body
+
+  if (quantity !== undefined && quantity !== sale.quantity) {
+    const product = await Product.findById(sale.productId)
+    if (product) {
+      const delta = quantity - sale.quantity // positive = selling more, negative = selling less
+      if (product.stock < delta) {
+        return res.status(400).json({ message: `Only ${product.stock} left in stock.` })
+      }
+      product.stock -= delta
+      product.sold += delta
+      await product.save()
+    }
+    sale.quantity = quantity
+  }
+
+  if (channel !== undefined) sale.channel = channel === 'online' ? 'online' : 'offline'
+  if (customerName !== undefined) sale.customerName = customerName
+
+  await sale.save()
+  res.json(sale)
+})
+
+// _________________________________________________________________________
+// =========================================================================
 // GET /api/seller/sales  (protected, shop sellers only)
 export const listSales = asyncHandler(async (req, res) => {
   if (req.sellerType !== 'shop') {

@@ -154,3 +154,54 @@ export const getMySellerAccount = asyncHandler(async (req, res) => {
 })
 // _________________________________________________________________________
 // =========================================================================
+
+export const updateSellerAccount = asyncHandler(async (req, res) => {
+  if (req.user.role !== 'seller') {
+    return res.status(404).json({ message: 'No seller account yet.' })
+  }
+
+  if (req.user.sellerType === 'shop') {
+    const shop = await Shop.findOne({ userId: req.user._id })
+    if (!shop) return res.status(404).json({ message: 'Shop not found.' })
+
+    const editable = [
+      'shopName', 'ownerName', 'phone', 'email',
+      'logoUrl', 'bannerUrl', 'description',
+      'businessType', 'homeDelivery',
+    ]
+    editable.forEach((field) => {
+      if (req.body[field] !== undefined) shop[field] = req.body[field]
+    })
+
+    if (req.body.address !== undefined) shop.location.address = req.body.address
+    if (req.body.state !== undefined) shop.location.state = req.body.state
+    if (req.body.district !== undefined) shop.location.district = req.body.district
+    if (req.body.area !== undefined) shop.location.area = req.body.area
+
+    if (req.body.openTime !== undefined) shop.timing.open = req.body.openTime
+    if (req.body.closeTime !== undefined) shop.timing.close = req.body.closeTime
+    if (req.body.openDays !== undefined) shop.timing.openDays = req.body.openDays
+
+    await shop.save()
+    return res.json({ sellerType: 'shop', account: shop.toPublicProfile() })
+  }
+
+  const provider = await ServiceProvider.findOne({ userId: req.user._id })
+  if (!provider) return res.status(404).json({ message: 'Service profile not found.' })
+
+  const editable = [
+    'name', 'phone', 'email', 'bannerUrl', 'description', 'workType',
+    'serviceArea', 'workingDays', 'timeSlots', 'availability',
+  ]
+  editable.forEach((field) => {
+    if (req.body[field] !== undefined) provider[field] = req.body[field]
+  })
+
+  if (req.body.priceAmount !== undefined) provider.price.amount = req.body.priceAmount
+  if (req.body.priceUnit !== undefined) provider.price.unit = req.body.priceUnit
+
+  await provider.save()
+  return res.json({ sellerType: 'service', account: provider.toPublicProfile() })
+})
+// _________________________________________________________________________
+// =========================================================================
